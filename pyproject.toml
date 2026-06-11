@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kibuilder"
+version = "0.1.0"
+description = "Generate visual step-by-step assembly guides from KiCAD PCB designs."
+readme = "README.md"
+license = { text = "GPL-3.0-or-later" }
+authors = [{ name = "Matthew Nakamura" }]
+requires-python = ">=3.10"
+dependencies = [
+    "Pillow>=10",
+    "PyQt6>=6.5",
+    "numpy>=1.24",
+    "PyYAML>=6",
+    "cadquery-ocp>=7.7",   # provides OCP / OpenCASCADE Python bindings
+    "pyobjc-framework-Cocoa; sys_platform=='darwin'",  # NSWindow orderOut_
+]
+
+[project.optional-dependencies]
+build = [
+    "pyinstaller>=6.0",    # for `scripts/build_app.sh` -> dist/kibuilder.app
+]
+dev = [
+    "pyinstaller>=6.0",
+    "pytest>=7",
+]
+
+[project.urls]
+Homepage = "https://github.com/mattnakamura/kibuilder"
+Issues = "https://github.com/mattnakamura/kibuilder/issues"
+
+[project.scripts]
+kibuilder = "kibuilder.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kibuilder"]

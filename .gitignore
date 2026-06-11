@@ -1,0 +1,21 @@
+# Build artifacts
+build/
+dist/
+*.spec.bak
+
+# Icon intermediates (icns is rebuilt by scripts/build_icon.sh)
+resources/kibuilder.iconset/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/

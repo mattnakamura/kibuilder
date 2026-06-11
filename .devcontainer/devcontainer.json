@@ -1,0 +1,57 @@
+{
+    "name": "kibuilder",
+    "build": {
+        "dockerfile": "../Dockerfile",
+        "context": ".."
+    },
+
+    // Bind the codespace workspace (the kibuilder repo) to /work so the
+    // GUI opens straight into examples/openpauw and any of the user's own
+    // sample projects that live in the repo.
+    "workspaceFolder": "/work",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/work,type=bind",
+    "remoteUser": "kb",
+
+    // The Dockerfile's ENTRYPOINT is the KasmVNC launcher — replace it with
+    // sleep so the container stays alive while VS Code attaches, then start
+    // KasmVNC as a side process below.
+    "overrideCommand": true,
+
+    // After the container starts: launch the KasmVNC stack in the background
+    // so port 6901 starts serving. Output redirected so VS Code doesn't tail
+    // it forever in the terminal.
+    "postStartCommand": "nohup /home/kb/entrypoint.sh >/tmp/kibuilder.log 2>&1 &",
+
+    // Codespaces will forward 6901 automatically and offer to open it in
+    // the browser. onAutoForward=openBrowser pops a tab on first start.
+    "forwardPorts": [6901],
+    "portsAttributes": {
+        "6901": {
+            "label": "kibuilder GUI",
+            "onAutoForward": "openBrowser",
+            "protocol": "http"
+        }
+    },
+
+    // Helpful editor extensions for anyone who pokes at kibuilder source
+    // from inside the codespace.
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "redhat.vscode-yaml"
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/bin/python3.12"
+            }
+        }
+    },
+
+    // Codespaces machine size — KasmVNC + OCP renders are memory-hungry;
+    // 4-core / 8 GB is a comfortable default.
+    "hostRequirements": {
+        "cpus": 4,
+        "memory": "8gb"
+    }
+}

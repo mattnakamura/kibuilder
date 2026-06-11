@@ -1,0 +1,91 @@
+# Build, (optionally) sign + notarize, and attach per-arch DMGs to the
+# GitHub Release whenever a v* tag is pushed.
+#
+# Required repo secrets for signing/notarization (all optional — without
+# them the workflow still produces unsigned, ad-hoc DMGs):
+#   MACOS_CERT_P12         base64 of the Developer ID Application .p12
+#   MACOS_CERT_PASSWORD    password for the .p12
+#   CODESIGN_IDENTITY      e.g. "Developer ID Application: Matthew Nakamura (TEAMID)"
+#   NOTARY_APPLE_ID        Apple ID email
+#   NOTARY_TEAM_ID         10-char team ID
+#   NOTARY_PASSWORD        app-specific password for notarytool
+
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15          # Apple Silicon
+            arch: arm64
+          - runner: macos-15-intel    # Intel
+            arch: x86_64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install kibuilder + build deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[build]"
+
+      - name: Import signing certificate (if provided)
+        if: ${{ env.HAVE_CERT == 'true' }}
+        env:
+          HAVE_CERT: ${{ secrets.MACOS_CERT_P12 != '' }}
+          MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
+          MACOS_CERT_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
+        run: |
+          echo "$MACOS_CERT_P12" | base64 --decode > /tmp/cert.p12
+          security create-keychain -p ci-keychain build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p ci-keychain build.keychain
+          security import /tmp/cert.p12 -k build.keychain \
+              -P "$MACOS_CERT_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: \
+              -s -k ci-keychain build.keychain
+          rm /tmp/cert.p12
+
+      - name: Build .app
+        env:
+          CODESIGN_IDENTITY: ${{ secrets.CODESIGN_IDENTITY }}
+        run: scripts/build_app.sh --clean
+
+      - name: Package DMG
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          scripts/make_dmg.sh "$VERSION" "${{ matrix.arch }}"
+
+      - name: Notarize + staple (if credentials provided)
+        if: ${{ env.HAVE_NOTARY == 'true' }}
+        env:
+          HAVE_NOTARY: ${{ secrets.NOTARY_APPLE_ID != '' }}
+          NOTARY_APPLE_ID: ${{ secrets.NOTARY_APPLE_ID }}
+          NOTARY_TEAM_ID: ${{ secrets.NOTARY_TEAM_ID }}
+          NOTARY_PASSWORD: ${{ secrets.NOTARY_PASSWORD }}
+        run: |
+          DMG=$(ls dist/kibuilder-*-${{ matrix.arch }}.dmg)
+          xcrun notarytool submit "$DMG" \
+              --apple-id "$NOTARY_APPLE_ID" \
+              --team-id "$NOTARY_TEAM_ID" \
+              --password "$NOTARY_PASSWORD" \
+              --wait
+          xcrun stapler staple "$DMG"
+
+      - name: Attach DMG to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --verify-tag \
+              --title "kibuilder $GITHUB_REF_NAME" 2>/dev/null || true
+          gh release upload "$GITHUB_REF_NAME" dist/kibuilder-*-${{ matrix.arch }}.dmg --clobber

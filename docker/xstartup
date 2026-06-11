@@ -1,0 +1,14 @@
+#!/bin/bash
+# KasmVNC xstartup — runs when the VNC display comes up.
+# Start a minimal window manager and launch kibuilder as the sole window.
+
+# Strip xrdb/Xresources noise so kasmvnc doesn't spew warnings
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+
+# Lightweight WM so the kibuilder window gets a titlebar / move / resize
+fluxbox >/tmp/fluxbox.log 2>&1 &
+
+# Give Xvfb / fluxbox a beat to settle, then launch the app
+sleep 1
+exec kibuilder -v gui

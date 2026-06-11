@@ -1,0 +1,15 @@
+services:
+  kibuilder:
+    build: .
+    image: kibuilder:latest
+    container_name: kibuilder
+    ports:
+      - "6901:6901"   # KasmVNC web client
+    volumes:
+      # Mount the host directory containing your KiCad project as /work
+      # so kibuilder can open it and write build artifacts back to disk.
+      - ${KIBUILDER_PROJECT_DIR:-./examples/openpauw}:/work:rw
+    environment:
+      KIBUILDER_GEOM: 1600x1000
+    stdin_open: true
+    tty: true

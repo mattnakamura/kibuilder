@@ -1,0 +1,26 @@
+# KasmVNC server config — http + no auth, demo-grade.
+# Production deployments should enable TLS + authentication.
+
+desktop:
+  resolution:
+    width: 1600
+    height: 1000
+  allow_resize: true
+  pixel_depth: 24
+
+network:
+  protocol: http
+  websocket_port: 6901
+  interface: 0.0.0.0
+
+security:
+  brute_force_protection:
+    enabled: false
+
+logging:
+  log_writer_name: all
+  log_dest: logfile
+  level: 30
+
+runtime_configuration:
+  allow_client_to_override_kasm_server_settings: true

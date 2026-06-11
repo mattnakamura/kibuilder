@@ -1,0 +1,192 @@
+project:
+  pcb: ../../../OpenPauw/cad/OpenPauw.kicad_pcb
+  output: ../../../OpenPauw/cad/media/assembly
+  step_search_paths:
+  - /Applications/KiCad/KiCad.app/Contents/SharedSupport/3dmodels
+  - ../../../OpenPauw/cad/footprints
+components:
+  D_SMA:
+    step: Diode_SMD.3dshapes/D_SMA.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  SOT235:
+    step: Package_TO_SOT_SMD.3dshapes/SOT-23-5.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  JST_PH:
+    step: 3dmodels/JST_B4B-PH-SM4-TB.step
+    rot_x: 90.0
+    rot_y: 0.0
+    rot_z: 0.0
+  R_AXIAL:
+    step: Resistor_THT.3dshapes/R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  DIP16_SOCKET:
+    step: Package_DIP.3dshapes/DIP-16_W7.62mm_Socket.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  DIP16_CHIP:
+    step: Package_DIP.3dshapes/DIP-16_W7.62mm.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  PH_1x04:
+    step: Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x04_P2.54mm_Vertical.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  PH_1x07:
+    step: Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x07_P2.54mm_Vertical.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  PH_1x08:
+    step: Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x08_P2.54mm_Vertical.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  PH_1x12:
+    step: Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x12_P2.54mm_Vertical.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  PS_1x12:
+    step: Connector_PinSocket_2.54mm.3dshapes/PinSocket_1x12_P2.54mm_Vertical.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  PS_1x13:
+    step: Connector_PinSocket_2.54mm.3dshapes/PinSocket_1x13_P2.54mm_Vertical.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  PS_1x16:
+    step: Connector_PinSocket_2.54mm.3dshapes/PinSocket_1x16_P2.54mm_Vertical.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  INDUCTOR:
+    step: Inductor_THT.3dshapes/L_Radial_D7.5mm_P5.00mm_Fastron_07P.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  CAP_RADIAL:
+    step: Capacitor_THT.3dshapes/CP_Radial_D10.0mm_P5.00mm.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  BANANA_RED:
+    step: 3dmodels/Banana_Cliff_red.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 90.0
+  BANANA_BLACK:
+    step: 3dmodels/Banana_Cliff_black.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  FEATHER:
+    step: Adafruit-RP2040-KiCAD/4884 Feather RP2040.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+  MCP_BREAKOUT:
+    step: Adafruit-MCP23017.pretty/5346-MCP23017-Expander.step
+    rot_x: 0.0
+    rot_y: 0.0
+    rot_z: 0.0
+stages:
+- n: 1
+  title: Bare PCB
+  sub: 'Inspect: no shorts, silkscreen legible.'
+  parts: []
+- n: 2
+  title: SMD parts
+  sub: "D1 \xB7 U6 \xB7 J5"
+  parts:
+  - key: D_SMA
+    qty: 1
+    label: "D1 \xB7 Schottky"
+  - key: SOT235
+    qty: 1
+    label: "U6 \xB7 LMR62421"
+  - key: JST_PH
+    qty: 1
+    label: "J5 \xB7 JST PH"
+- n: 3
+  title: Axial resistors
+  sub: "R1 \xB7 R2"
+  parts:
+  - key: R_AXIAL
+    qty: 2
+    label: R1, R2
+- n: 4
+  title: DIP-16 sockets
+  sub: "U1 \xB7 U2 \xB7 U3 \xB7 U4 (sockets only)"
+  parts:
+  - key: DIP16_SOCKET
+    qty: 4
+    label: "U1\u2013U4"
+- n: 5
+  title: Pin headers + sockets
+  sub: "J6\u2013J11 + Feather/MCP stacking sockets"
+  parts:
+  - key: PH_1x08
+    qty: 2
+    label: J7, J8
+  - key: PH_1x04
+    qty: 2
+    label: J6, J9
+  - key: PH_1x12
+    qty: 1
+    label: J11
+  - key: PH_1x07
+    qty: 1
+    label: J10
+  - key: PS_1x16
+    qty: 1
+    label: Feather
+  - key: PS_1x12
+    qty: 1
+    label: Feather
+  - key: PS_1x13
+    qty: 2
+    label: MCP
+- n: 6
+  title: Inductor + caps
+  sub: "L1 \xB7 C1 \xB7 C2 \xB7 C3 (mind polarity)"
+  parts:
+  - key: INDUCTOR
+    qty: 1
+    label: L1
+  - key: CAP_RADIAL
+    qty: 3
+    label: "C1\u2013C3"
+- n: 7
+  title: Banana jacks
+  sub: "J1 red \xB7 J2 black \xB7 J3 red \xB7 J4 black"
+  parts:
+  - key: BANANA_RED
+    qty: 2
+    label: J1, J3
+  - key: BANANA_BLACK
+    qty: 2
+    label: J2, J4
+- n: 8
+  title: ICs + daughterboards
+  sub: "MAX328 \xD7 4 + Feather RP2040 + MCP23017"
+  parts:
+  - key: DIP16_CHIP
+    qty: 4
+    label: MAX328
+  - key: FEATHER
+    qty: 1
+    label: Feather
+  - key: MCP_BREAKOUT
+    qty: 1
+    label: MCP23017
