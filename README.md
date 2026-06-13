@@ -8,12 +8,16 @@
 
 [![DOI](https://zenodo.org/badge/1266755266.svg)](https://doi.org/10.5281/zenodo.20683351)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux-lightgrey)
+[![Built for KiCad](https://img.shields.io/badge/built%20for-KiCad-314CB0)](https://www.kicad.org/)
+[![Release](https://img.shields.io/github/v/release/mattnakamura/kibuilder)](https://github.com/mattnakamura/kibuilder/releases)
 
 </div>
 
 ---
 
-Given any `.kicad_pcb` and a small YAML config describing assembly stages, `kibuilder` produces a build guide where each step shows:
+Given any [KiCad](https://www.kicad.org/) `.kicad_pcb` and a small YAML config describing assembly stages, `kibuilder` produces a build guide where each step shows:
 
 - the board after that step,
 - a "parts to add" callout with high-quality OpenCASCADE renders of each new component (transparent backgrounds, real STEP colors), and
@@ -61,7 +65,7 @@ This downloads the right build for your architecture (Apple Silicon or Intel), v
 >
 > Then open the app normally. This is a one-time step per install — it will go away entirely once the app is code-signed and notarized (planned; see [Status](#status)). On recent macOS the old right-click → **Open** bypass no longer works for unsigned apps, so the `xattr` command above is the reliable fix.
 
-`kibuilder` needs KiCad's `kicad-cli` for the board renders — install KiCad too:
+`kibuilder` needs [KiCad](https://www.kicad.org/)'s `kicad-cli` for the board renders — install KiCad too:
 
 ```bash
 brew install --cask kicad
@@ -135,6 +139,20 @@ Early — pulled out of the OpenPauw project where the renderers were first deve
 **Roadmap:**
 - **Code signing + notarization** — eliminates the Gatekeeper quarantine step above (blocked on an Apple Developer ID). The release CI already has the signing/notarization steps wired; they activate automatically once the signing secrets are added.
 - Windows build is published but the V3d rendering path there is not yet runtime-verified.
+
+## Citation
+
+If you use kibuilder in your work, please cite it. GitHub's **"Cite this repository"** button reads the metadata in [`CITATION.cff`](CITATION.cff); every release is archived on Zenodo with a DOI:
+
+[![DOI](https://zenodo.org/badge/1266755266.svg)](https://doi.org/10.5281/zenodo.20683351)
+
+> Nakamura, M. *kibuilder: visual step-by-step assembly guides from KiCAD PCBs.* Zenodo. https://doi.org/10.5281/zenodo.20683351
+
+The DOI above is the **concept DOI** — it always resolves to the latest version. Zenodo also mints a per-release version DOI if you need to cite a specific version.
+
+## Acknowledgments
+
+Built on [KiCad](https://www.kicad.org/) (`kicad-cli` board renders) and [OpenCASCADE](https://www.opencascade.com/) via [`cadquery-ocp`](https://github.com/CadQuery/ocp) (component STEP renders). First developed for the [OpenPauw](https://github.com/nanosystemslab/OpenPauw) measurement system.
 
 ## License
 
