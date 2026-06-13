@@ -6,6 +6,9 @@
 
 **Generate visual step-by-step assembly guides from a KiCAD PCB.**
 
+[![DOI](https://zenodo.org/badge/1266755266.svg)](https://doi.org/10.5281/zenodo.20683351)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+
 </div>
 
 ---

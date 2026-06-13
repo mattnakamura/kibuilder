@@ -18,6 +18,14 @@ repository-code: "https://github.com/mattnakamura/kibuilder"
 license: GPL-3.0-or-later
 version: "0.1.1"
 date-released: "2026-06-13"
+doi: 10.5281/zenodo.20683351
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.20683351
+    description: "Concept DOI — always resolves to the latest version"
+  - type: doi
+    value: 10.5281/zenodo.20683352
+    description: "Version DOI for v0.1.1"
 keywords:
   - kicad
   - pcb
