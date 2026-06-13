@@ -1,6 +1,14 @@
+<div align="center">
+
+<img src="resources/icon_1024.png" alt="kibuilder logo" width="160">
+
 # kibuilder
 
-Generate visual step-by-step assembly guides from a KiCAD PCB.
+**Generate visual step-by-step assembly guides from a KiCAD PCB.**
+
+</div>
+
+---
 
 Given any `.kicad_pcb` and a small YAML config describing assembly stages, `kibuilder` produces a build guide where each step shows:
 
