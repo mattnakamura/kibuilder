@@ -83,6 +83,7 @@ exe = EXE(
     # stay ad-hoc signed (None).
     codesign_identity=os.environ.get("CODESIGN_IDENTITY") or None,
     entitlements_file="resources/entitlements.plist",
+    icon="resources/kibuilder.ico" if sys.platform == "win32" else None,
 )
 
 coll = COLLECT(
@@ -96,23 +97,26 @@ coll = COLLECT(
     name="kibuilder",
 )
 
-app = BUNDLE(
-    coll,
-    name="kibuilder.app",
-    icon="resources/kibuilder.icns",
-    bundle_identifier="io.github.mattnakamura.kibuilder",
-    version="0.1.0",
-    info_plist={
-        "CFBundleName": "kibuilder",
-        "CFBundleDisplayName": "kibuilder",
-        "CFBundleShortVersionString": "0.1.0",
-        "CFBundleVersion": "0.1.0",
-        "NSHighResolutionCapable": True,
-        "LSMinimumSystemVersion": "11.0",
-        # Required so Cocoa_Window can attach an OpenGL surface without
-        # the macOS sandbox blocking it.
-        "NSPrincipalClass": "NSApplication",
-        # Don't show in Dock until the splash actually appears? Leave as
-        # default app (LSUIElement=False) so users can Cmd-Tab to it.
-    },
-)
+# BUNDLE is macOS-only; on Windows/Linux the onedir COLLECT output in
+# dist/kibuilder/ is the final artifact.
+if sys.platform == "darwin":
+    app = BUNDLE(
+        coll,
+        name="kibuilder.app",
+        icon="resources/kibuilder.icns",
+        bundle_identifier="io.github.mattnakamura.kibuilder",
+        version="0.1.0",
+        info_plist={
+            "CFBundleName": "kibuilder",
+            "CFBundleDisplayName": "kibuilder",
+            "CFBundleShortVersionString": "0.1.0",
+            "CFBundleVersion": "0.1.0",
+            "NSHighResolutionCapable": True,
+            "LSMinimumSystemVersion": "11.0",
+            # Required so Cocoa_Window can attach an OpenGL surface without
+            # the macOS sandbox blocking it.
+            "NSPrincipalClass": "NSApplication",
+            # Don't show in Dock until the splash actually appears? Leave as
+            # default app (LSUIElement=False) so users can Cmd-Tab to it.
+        },
+    )

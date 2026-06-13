@@ -16,6 +16,11 @@ on:
   push:
     tags: ["v*"]
 
+# The default GITHUB_TOKEN is read-only on new repos; release creation
+# and asset upload need write access to repo contents.
+permissions:
+  contents: write
+
 jobs:
   build:
     strategy:
@@ -86,6 +91,46 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # Both matrix jobs race to create the release; "already exists"
+          # from the loser is fine, any other error should be visible.
           gh release create "$GITHUB_REF_NAME" --verify-tag \
-              --title "kibuilder $GITHUB_REF_NAME" 2>/dev/null || true
+              --title "kibuilder $GITHUB_REF_NAME" \
+              || echo "(release exists or create failed — see above)"
           gh release upload "$GITHUB_REF_NAME" dist/kibuilder-*-${{ matrix.arch }}.dmg --clobber
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install kibuilder + build deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[build]"
+
+      - name: Build icon (.ico)
+        run: python scripts/make_icon.py
+
+      - name: Build app (PyInstaller onedir)
+        run: pyinstaller --noconfirm kibuilder.spec
+
+      - name: Package zip
+        shell: pwsh
+        run: |
+          $version = $env:GITHUB_REF_NAME -replace '^v', ''
+          Compress-Archive -Path dist/kibuilder -DestinationPath "dist/kibuilder-$version-windows-x86_64.zip"
+          Get-FileHash "dist/kibuilder-$version-windows-x86_64.zip" -Algorithm SHA256
+
+      - name: Attach zip to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          gh release create "$GITHUB_REF_NAME" --verify-tag \
+              --title "kibuilder $GITHUB_REF_NAME" \
+              || echo "(release exists — fine)"
+          gh release upload "$GITHUB_REF_NAME" dist/kibuilder-*-windows-x86_64.zip --clobber

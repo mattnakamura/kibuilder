@@ -154,6 +154,12 @@ def main():
     icon.save(OUT, "PNG")
     print(f"wrote {OUT}  ({OUT.stat().st_size // 1024} KB)")
 
+    # Windows .ico alongside — PIL embeds all standard sizes in one file.
+    ico = OUT.with_name("kibuilder.ico")
+    icon.save(ico, "ICO", sizes=[(16, 16), (32, 32), (48, 48),
+                                 (64, 64), (128, 128), (256, 256)])
+    print(f"wrote {ico}  ({ico.stat().st_size // 1024} KB)")
+
 
 if __name__ == "__main__":
     sys.exit(main())

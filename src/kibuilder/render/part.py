@@ -144,6 +144,16 @@ class Renderer:
         if sys.platform == "darwin":
             self._win = _NativeWindow("", -32000, -32000,
                                       window_size[0], window_size[1])
+        elif sys.platform == "win32":
+            # WNT_Window needs a registered window class. WS_POPUP
+            # (0x80000000) gives a bare, decoration-free window we park
+            # far off-screen. (Experimental — verified via CI only.)
+            from OCP.WNT import WNT_WClass
+            self._wclass = WNT_WClass("kibuilder_v3d", None, 0)
+            self._win = _NativeWindow("kibuilder", self._wclass,
+                                      0x80000000,
+                                      -32000, -32000,
+                                      window_size[0], window_size[1])
         else:
             # Xw_Window takes the X display connection as first arg.
             self._win = _NativeWindow(self._display, "kibuilder",

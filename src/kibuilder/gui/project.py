@@ -386,11 +386,13 @@ class ProjectWindow(QMainWindow):
         if leftover:
             log.info("purged %d leftover temp file(s) before build", len(leftover))
 
-        if shutil.which("kicad-cli") is None:
+        from kibuilder.kicad import find_kicad_cli
+        if find_kicad_cli() is None:
             QMessageBox.critical(
                 self, "kicad-cli missing",
-                "Building the guide needs `kicad-cli` on PATH. Install KiCad "
-                "with command-line tools and try again.",
+                "Building the guide needs KiCad's command-line tools. "
+                "Install KiCad and try again (checked PATH and the "
+                "standard install locations).",
             )
             return
         if not self._cfg.stages:

@@ -66,9 +66,12 @@ def render_board(pcb_path: Path,
                  quality: str = "high",
                  background: str = "opaque") -> bool:
     """Render one board image via kicad-cli. Returns True on success."""
-    if shutil.which("kicad-cli") is None:
+    from kibuilder.kicad import find_kicad_cli
+    kicad_cli = find_kicad_cli()
+    if kicad_cli is None:
         raise RuntimeError(
-            "kicad-cli not found on PATH — install KiCad with CLI tools."
+            "kicad-cli not found — install KiCad with CLI tools "
+            "(checked PATH and the standard install locations)."
         )
     pcb_path = Path(pcb_path)
     out_path = Path(out_path)
@@ -86,7 +89,7 @@ def render_board(pcb_path: Path,
         else:
             shutil.copyfile(pcb_path, tmp)
         cmd = [
-            "kicad-cli", "pcb", "render",
+            kicad_cli, "pcb", "render",
             "--side", "top",
             "--perspective",
             "--rotate", rotate,
