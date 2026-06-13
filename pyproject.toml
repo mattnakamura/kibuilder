@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "kibuilder"
-version = "0.1.0"
+version = "0.1.1"
 description = "Generate visual step-by-step assembly guides from KiCAD PCB designs."
 readme = "README.md"
 license = { text = "GPL-3.0-or-later" }

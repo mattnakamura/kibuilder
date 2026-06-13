@@ -105,12 +105,12 @@ if sys.platform == "darwin":
         name="kibuilder.app",
         icon="resources/kibuilder.icns",
         bundle_identifier="io.github.mattnakamura.kibuilder",
-        version="0.1.0",
+        version="0.1.1",
         info_plist={
             "CFBundleName": "kibuilder",
             "CFBundleDisplayName": "kibuilder",
-            "CFBundleShortVersionString": "0.1.0",
-            "CFBundleVersion": "0.1.0",
+            "CFBundleShortVersionString": "0.1.1",
+            "CFBundleVersion": "0.1.1",
             "NSHighResolutionCapable": True,
             "LSMinimumSystemVersion": "11.0",
             # Required so Cocoa_Window can attach an OpenGL surface without

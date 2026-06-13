@@ -1,0 +1,22 @@
+{
+  "title": "kibuilder: visual step-by-step assembly guides from KiCAD PCBs",
+  "description": "<p>A tool that turns any KiCAD PCB into a visual, stage-by-stage assembly guide. Each step pairs a high-quality OpenCASCADE render of the components added at that stage with a cumulative kicad-cli render of the board, composited into instruction-manual-style pages with step badges and quantity tags. Outputs per-stage images, a combined landscape PDF, and a GitHub-viewable Markdown guide. Includes a PyQt6 GUI for stage editing, component orientation, and height-based auto-staging.</p>",
+  "upload_type": "software",
+  "license": "GPL-3.0-or-later",
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Nakamura, Matthew",
+      "affiliation": "Nanosystems Lab, University of Hawaiʻi at Mānoa"
+    }
+  ],
+  "keywords": [
+    "kicad",
+    "pcb",
+    "assembly-instructions",
+    "opencascade",
+    "documentation",
+    "electronics",
+    "pyqt"
+  ]
+}
