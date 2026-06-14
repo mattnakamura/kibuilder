@@ -11,9 +11,9 @@
 cask "kibuilder" do
   arch arm: "arm64", intel: "x86_64"
 
-  version "0.1.0"
-  sha256 arm:   "fce65dbe83d56486743a641338f2689b018df39ff2a822e9d7f2fe07212b6fe4",
-         intel: "945f1142e88ffe4566ffe06d4533d8de28e2e2f77c52962c8976680afdb702b2"
+  version "0.1.1"
+  sha256 arm:   "8ae6f4fddbc9243fcb47cf12ddeb2fca501332d15400a1f9fdb1d6f66c92209d",
+         intel: "2fd675783009d758a706e1e9d83192ef9b7eda9feec5c803c49276e94947d402"
 
   url "https://github.com/mattnakamura/kibuilder/releases/download/v#{version}/kibuilder-#{version}-#{arch}.dmg"
   name "kibuilder"
